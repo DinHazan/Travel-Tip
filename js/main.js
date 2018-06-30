@@ -12,7 +12,6 @@ locService.getLocs()
 let currPosition;
 window.onload = () => {
     if (window.location.search) {
-        debugger
         return getAllUrlParams()
         .then((pos) =>{
             locationByUrl(pos)
@@ -89,13 +88,12 @@ function getAllUrlParams() {
 }
 
 function locationByUrl(pos) {
-    console.log('User position is:', pos.coords);
+    // console.log('User position is:', pos.coords);
     mapService.initMap(pos.lat, pos.lng)
         .then(() => {
             mapService.addMarker(pos);
             renderWeather(pos.lat, pos.lng)
         })
-        .then
         .catch(err => {
             console.log('err!!!', err);
         })
