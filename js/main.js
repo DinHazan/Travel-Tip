@@ -4,26 +4,18 @@ import locService from './services/loc.service.js'
 import mapService from './services/map.service.js'
 import weatherServise from './services/weather-service.js'
 
-
+var currUrl
 
 
 locService.getLocs()
     .then(locs => console.log('locs', locs))
-let currPosition;
-window.onload = () => {
+window.onload = (ev) => {
     if (window.location.search) {
-        return getAllUrlParams()
-        .then((pos) =>{
-            locationByUrl(pos)
-
-        })
+        let urlPos = getAllUrlParams()
+        getLocationByUrl(urlPos)
     } else {
         return locService.getPosition()
             .then((pos) => {
-                currPosition = {
-                    lat: pos.coords.latitude,
-                    lng: pos.coords.longitude
-                }
                 return mapService.initMap(pos.coords.latitude, pos.coords.longitude)
             })
             .then(() => {
@@ -33,14 +25,10 @@ window.onload = () => {
 
 }
 
-// document.querySelector('.btn1').onclick = () => {
-//     console.log('Thanks!');
-// }
 
 document.querySelector('input').addEventListener('keypress', function (e) {
     var key = e.which || e.keyCode;
-    if (key === 13) { // 13 is enter
-        // code for enter
+    if (key === 13){ 
         locService.getLocsByInput(this.value)
             .then((posData) => {
                 mapService.addMarker(posData.geometry.location);
@@ -63,6 +51,7 @@ function toMyLocation() {
                 lng: pos.coords.longitude
             });
             renderWeather(pos.coords.lat, pos.coords.lng)
+            getUrlByLocation(pos.coords)
         })
         .catch(err => {
             console.log('err!!!', err);
@@ -72,31 +61,32 @@ function toMyLocation() {
 
 
 
-document.querySelector('.btn1').addEventListener('click', (ev) => {
-    console.log('Aha!', ev.target);
-})
 
 function getAllUrlParams() {
     let pos = {}
-    // 'https://github.io/travelTip/index.html?lat=3.14&lng=1.63'
     var urlParams = new URLSearchParams(window.location.search)
     if (urlParams.has('lat') && urlParams.has('lng')) {
-        pos.lat = urlParams.get('lat')
-        pos.lng = urlParams.get('lng')
+        pos.lat = parseInt(urlParams.get('lat'))
+        pos.lng = parseInt(urlParams.get('lng'))
     }
     return pos
 }
 
-function locationByUrl(pos) {
-    // console.log('User position is:', pos.coords);
-    mapService.initMap(pos.lat, pos.lng)
+function getLocationByUrl(pos) {
+    console.log(window.location);
+
+    console.log('User position is:', pos.coords);
+    return mapService.initMap(pos.lat, pos.lng)
         .then(() => {
-            mapService.addMarker(pos);
+            return mapService.addMarker(pos);
+        })
+        .then(() => {
             renderWeather(pos.lat, pos.lng)
         })
         .catch(err => {
             console.log('err!!!', err);
         })
+
 }
 
 function renderWeather(lat, lng) {
@@ -115,4 +105,19 @@ function renderWeather(lat, lng) {
             console.log('err!!!', err);
             elWeather.innerText = 'Sorry we could not find any weather data for you ... ,please try later'
         })
+}
+
+
+document.querySelector('footer .copy').addEventListener('click', (ev) => {
+    let elUrl = document.querySelector(".urlInput")
+    elUrl.value = currUrl
+    elUrl.select()
+    document.execCommand('copy')
+})
+
+function getUrlByLocation(pos) {
+    let urlParams = new URLSearchParams(window.location.search)
+    urlParams.set('lat', pos.latitude)
+    urlParams.set('lng', pos.longitude)
+    currUrl = window.location.href+'&'+ urlParams
 }

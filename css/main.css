@@ -1,24 +1,49 @@
-*{
+* {
     box-sizing: border-box;
 }
 
-html,body{
+html,
+body {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
 }
 
+body {
+    background-color: rgb(190, 185, 181);
+    font-family: fantasy;
+}
+
 /* header */
-header{
+
+header {
     width: 100%;
     height: fit-content;
+    background-color: rgb(82, 85, 100);
 }
-header ul{
+
+header ul {
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    transition: all ease-in-out .8s
 }
-header li{
+
+button {
+    border-radius: 8px;
+    border: transparent;
+    background-color: rgb(116, 130, 143);
+    transition: all ease-in-out .5s;
+    padding: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(194, 91, 86)
+}
+
+header li {
     padding: 10px;
 }
 
@@ -30,7 +55,7 @@ input[type=text] {
     font-size: 16px;
     background-color: white;
     background-image: url('searchicon.png');
-    background-position: 10px 10px; 
+    background-position: 10px 10px;
     background-repeat: no-repeat;
     padding: 12px 20px 12px 40px;
     transition: all 0.4s ease-in-out;
@@ -42,10 +67,55 @@ input[type=text]:focus {
 
 /* main */
 
-main{
+main {
+    width: 100%;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.media-container {
+    flex-direction: column-reverse;
+    align-items: center;
     width: 100%;
 }
 
+.map {
+    width: 100%;
+    height: 400px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.weather {
+    background-color: rgb(150, 192, 206);
+    width: 100%;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+/* footer */
+
+footer {
+    justify-content: center;
+    padding: 10px;
+}
+
+@media only screen and (min-width: 800px) {
+    header ul {
+        flex-direction: row
+    }
+    .media-container {
+        flex-direction: row
+    }
+    .map {
+        width: 50%
+    }
+    .weather {
+        width: 50%;
+        height: 400px;
+    }
+}
 
 /* helpers */
 

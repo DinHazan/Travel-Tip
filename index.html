@@ -10,12 +10,12 @@
 
 <body>
     <header>
-        <ul class="flex clean-list">
+        <ul class="flex space-around clean-list">
             <li>
-                <h1>ES6</h1>
+                <h1>Travel-Tip</h1>
             </li>
             <li>
-                    <input type="text" name="search" placeholder="Search..">
+                <input type="text" name="search" placeholder="Search..">
             </li>
             <li>
                 <button class="my-location">My Location</button>
@@ -25,18 +25,18 @@
 
     <main>
         <div class=" flex column">
-                <h3 class="location-input-title"></h3>
-<div class="flex space-around">
-
-    <div class="weather" style="width: 50%";></div>
-    <div id="map" style="width: 50%; height: 400px;"></div>
-</div>
+            <h3 class="location-input-title align-center"></h3>
+            <div class="media-container flex space-around">
+                <div class="weather flex space-around column" ;></div>
+                <div id="map" class="map"></div>
+            </div>
         </div>
     </main>
 
-    <footer></footer>
-
-    <button class="btn1">Click Me</button>
+    <footer class=" flex">
+        <button class="copy">Copy and Share Url</button>
+        <input type="text" class="urlInput" />
+    </footer>
     <script type="module" src="js/main.js"></script>
 
 </body>
