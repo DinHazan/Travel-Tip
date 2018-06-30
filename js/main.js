@@ -12,6 +12,7 @@ locService.getLocs()
 let currPosition;
 window.onload = () => {
     if (window.location.search) {
+        debugger
         return getAllUrlParams()
         .then((pos) =>{
             locationByUrl(pos)
