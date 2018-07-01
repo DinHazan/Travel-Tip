@@ -9,7 +9,7 @@ var currUrl
 
 locService.getLocs()
     .then(locs => console.log('locs', locs))
-window.onload = (ev) => {
+window.onload = () => {
     if (window.location.search) {
         let urlPos = getAllUrlParams()
         getLocationByUrl(urlPos)
@@ -22,24 +22,34 @@ window.onload = (ev) => {
                 toMyLocation()
             });
     }
+    addEventListeners()
 
 }
 
+function addEventListeners(){
+    document.querySelector('input').addEventListener('keypress', function (e) {
+        var key = e.which || e.keyCode;
+        if (key === 13){ 
+            locService.getLocsByInput(this.value)
+                .then((posData) => {
+                    mapService.addMarker(posData.geometry.location);
+                    document.querySelector('.location-input-title').innerText = `Result For : ${posData.formatted_address}`
+                    renderWeather(posData.geometry.location.lat, posData.geometry.location.lng)
+                })
+        }
+    });
+    document.querySelector('.my-location').addEventListener('click', function (e) {
+        toMyLocation()
+    })
+    
+    document.querySelector('footer .copy').addEventListener('click', (ev) => {
+        let elUrl = document.querySelector(".urlInput")
+        elUrl.value = currUrl
+        elUrl.select()
+        document.execCommand('copy')
+    })
+}
 
-document.querySelector('input').addEventListener('keypress', function (e) {
-    var key = e.which || e.keyCode;
-    if (key === 13){ 
-        locService.getLocsByInput(this.value)
-            .then((posData) => {
-                mapService.addMarker(posData.geometry.location);
-                document.querySelector('.location-input-title').innerText = `Result For : ${posData.formatted_address}`
-                renderWeather(posData.geometry.location.lat, posData.geometry.location.lng)
-            })
-    }
-});
-document.querySelector('.my-location').addEventListener('click', function (e) {
-    toMyLocation()
-})
 
 
 
@@ -107,13 +117,6 @@ function renderWeather(lat, lng) {
         })
 }
 
-
-document.querySelector('footer .copy').addEventListener('click', (ev) => {
-    let elUrl = document.querySelector(".urlInput")
-    elUrl.value = currUrl
-    elUrl.select()
-    document.execCommand('copy')
-})
 
 function getUrlByLocation(pos) {
     let urlParams = new URLSearchParams(window.location.search)
